@@ -1,3 +1,4 @@
+//az deployment group create --resource-group fb-linkedin-ddd-course --template-file main.bicep
 param location string = resourceGroup().location
 
 resource azbus 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
