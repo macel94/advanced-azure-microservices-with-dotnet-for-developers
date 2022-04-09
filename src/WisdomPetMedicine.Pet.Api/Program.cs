@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace WisdomPetMedicine.Pet.Api
@@ -15,6 +16,14 @@ namespace WisdomPetMedicine.Pet.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                }).ConfigureAppConfiguration((hostContext, builder) =>
+                {
+                    var isDevelopment = hostContext.HostingEnvironment.IsDevelopment();
+
+                    if (isDevelopment)
+                    {
+                        builder.AddUserSecrets<Program>();
+                    }
                 });
     }
 }

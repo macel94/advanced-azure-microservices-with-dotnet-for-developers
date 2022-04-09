@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WisdomPetMedicine.Hospital.Api.ApplicationServices;
 using WisdomPetMedicine.Hospital.Api.Infrastructure;
+using WisdomPetMedicine.Hospital.Api.IntegrationEvents;
 
 namespace WisdomPetMedicine.Hospital.Api
 {
@@ -23,6 +24,7 @@ namespace WisdomPetMedicine.Hospital.Api
             services.AddHospitalDb(Configuration);
             services.AddScoped<HospitalApplicationService>();
             services.AddControllers();
+            services.AddHostedService<PetTransferredToHospitalIntegrationEventHandler>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WisdomPetMedicine.Hospital.Api", Version = "v1" });
