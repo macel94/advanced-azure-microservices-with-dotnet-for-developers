@@ -21,6 +21,14 @@ namespace WisdomPetMedicine.Rescue.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                }).ConfigureAppConfiguration((hostContext, builder) =>
+                {
+                    var isDevelopment = hostContext.HostingEnvironment.IsDevelopment();
+
+                    if (isDevelopment)
+                    {
+                        builder.AddUserSecrets<Program>();
+                    }
                 });
     }
 }
