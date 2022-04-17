@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "CosmosDb:ConnectionString": "",
+    "CosmosDb:ContainerId": "Patients",
+    "CosmosDb:DatabaseId": "WisdomPetMedicine",
+    "CosmosDbConnectionString": "",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+  },
+  "ConnectionStrings": {
+    "Hospital": "Data Source=localhost\\sqlexpress;Initial Catalog=Hospital;Integrated Security=true;"
+  }
+}
