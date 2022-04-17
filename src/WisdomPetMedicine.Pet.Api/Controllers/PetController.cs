@@ -51,6 +51,21 @@ namespace WisdomPetMedicine.Pet.Api.Controllers
             }
         }
 
+        [HttpPut("dateofbirth")]
+        public async Task<IActionResult> Put(SetDateOfBirthCommand command)
+        {
+            try
+            {
+                await petApplicationService.HandleCommandAsync(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut("breed")]
         public async Task<IActionResult> Put(SetBreedCommand command)
         {
