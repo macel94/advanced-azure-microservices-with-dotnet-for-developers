@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using WisdomPetMedicine.Hospital.Api.Infrastructure;
+using WisdomPetMedicine.Hospital.Domain.Entities;
+using WisdomPetMedicine.Hospital.Domain.Repositories;
+using WisdomPetMedicine.Hospital.Domain.ValueObjects;
 
 namespace WisdomPetMedicine.Hospital.Api.IntegrationEvents
 {
@@ -14,6 +17,7 @@ namespace WisdomPetMedicine.Hospital.Api.IntegrationEvents
     {
         private readonly IConfiguration config;
         private readonly IServiceScopeFactory serviceScopeFactory;
+        private readonly IPatientAggregateStore patientAggregateStore;
         private readonly ILogger<PetTransferredToHospitalIntegrationEventHandler> logger;
 
         private readonly ServiceBusClient client;
@@ -21,10 +25,12 @@ namespace WisdomPetMedicine.Hospital.Api.IntegrationEvents
 
         public PetTransferredToHospitalIntegrationEventHandler(IConfiguration config, 
             IServiceScopeFactory serviceScopeFactory,
+            IPatientAggregateStore patientAggregateStore,
             ILogger<PetTransferredToHospitalIntegrationEventHandler> logger)
         {
             this.config = config;
             this.serviceScopeFactory = serviceScopeFactory;
+            this.patientAggregateStore = patientAggregateStore;
             this.logger = logger;
 
             client = new ServiceBusClient(config["ServiceBus:ConnectionString"]);
@@ -38,8 +44,6 @@ namespace WisdomPetMedicine.Hospital.Api.IntegrationEvents
             logger.LogError(args.Exception.ToString());
             return Task.CompletedTask;
         }
-
-        
 
         private async Task Processor_ProcessMessageAsync(ProcessMessageEventArgs args)
         {
@@ -56,6 +60,10 @@ namespace WisdomPetMedicine.Hospital.Api.IntegrationEvents
                 dbContext.PatientsMetadata.Add(theEvent);
                 await dbContext.SaveChangesAsync();
             }
+
+            var patientId = PatientId.Create(theEvent.Id);
+            var patient = new Patient(patientId);
+            await patientAggregateStore.SaveAsync(patient);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
