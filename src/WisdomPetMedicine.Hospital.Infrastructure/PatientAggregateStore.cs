@@ -8,12 +8,12 @@ using WisdomPetMedicine.Hospital.Domain.ValueObjects;
 
 namespace WisdomPetMedicine.Hospital.Infrastructure
 {
-    public class PatientAggrefateStore : IPatientAggregateStore
+    public class PatientAggregateStore : IPatientAggregateStore
     {
         private readonly CosmosClient _client;
         private readonly Container _container;
 
-        public PatientAggrefateStore(IConfiguration configuration)
+        public PatientAggregateStore(IConfiguration configuration)
         {
             var cs = configuration["CosmosDb:ConnectionString"];
             var dbId = configuration["CosmosDb:DatabaseId"];

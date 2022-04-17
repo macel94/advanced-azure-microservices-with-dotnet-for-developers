@@ -24,7 +24,7 @@ namespace WisdomPetMedicine.Hospital.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHospitalDb(Configuration);
-            services.AddSingleton<IPatientAggregateStore, PatientAggrefateStore>();
+            services.AddSingleton<IPatientAggregateStore, PatientAggregateStore>();
             services.AddScoped<HospitalApplicationService>();
             services.AddControllers();
             services.AddHostedService<PetTransferredToHospitalIntegrationEventHandler>();
