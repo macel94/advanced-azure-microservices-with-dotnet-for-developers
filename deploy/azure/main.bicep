@@ -28,3 +28,41 @@ resource pettransferredsub 'Microsoft.ServiceBus/namespaces/topics/subscriptions
   name: 'Pet-transferred-to-hospital'
   parent: pettransferredtopic
 }
+
+// Commented because no free tier available today for west europe.
+// Error : Message: {\"code\":\"ServiceUnavailable\",\"message\":\"Sorry, we are currently experiencing high demand in West Europe region, 
+// and cannot fulfill your request at this time. To request region access for your subscription, please follow this link https://aka.ms/cosmosdbquota 
+// for more details on how to create a region access request.
+
+// var accountName = 'cosmos-${uniqueString(resourceGroup().id)}'
+
+// var databaseName = 'Patients'
+
+// resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2021-11-15-preview' = {
+//   name: toLower(accountName)
+//   location: location
+//   properties: {
+//     enableFreeTier: true
+//     databaseAccountOfferType: 'Standard'
+//     consistencyPolicy: {
+//       defaultConsistencyLevel: 'Session'
+//     }
+//     locations: [
+//       {
+//         locationName: location
+//       }
+//     ]
+//   }
+// }
+
+// resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-11-15-preview' = {
+//   name: '${cosmosAccount.name}/${toLower(databaseName)}'
+//   properties: {
+//     resource: {
+//       id: databaseName
+//     }
+//     options: {
+//       throughput: 400
+//     }
+//   }
+// }
