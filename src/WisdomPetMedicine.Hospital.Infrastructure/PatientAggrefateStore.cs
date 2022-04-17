@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using WisdomPetMedicine.Common;
 using WisdomPetMedicine.Hospital.Domain.Entities;
 using WisdomPetMedicine.Hospital.Domain.Repositories;
 using WisdomPetMedicine.Hospital.Domain.ValueObjects;
@@ -29,9 +30,40 @@ namespace WisdomPetMedicine.Hospital.Infrastructure
             _container = _client.GetContainer(dbId, containerId);
         }
 
-        public async Task<Patient> LoadAsync(PatientId patient)
+        public async Task<Patient> LoadAsync(PatientId patientId)
         {
-            throw new NotImplementedException();
+            if (patientId == null)
+            {
+                throw new ArgumentNullException(nameof(patientId));
+            }
+
+            var aggregateId = GetAggregateIdFromPatient(patientId.Value);
+            var sql = $"SELECT * FROM c WHERE c.aggregateId = '{aggregateId}'";
+            var queryDefinition = new QueryDefinition(sql);
+            var iterator = _container.GetItemQueryIterator<CosmosEventData>(queryDefinition);
+            var allEvents = new List<CosmosEventData>();
+            while (iterator.HasMoreResults)
+            {
+                var resultSet = await iterator.ReadNextAsync();
+                foreach (var data in resultSet)
+                {
+                    allEvents.Add(data);
+                }
+            }
+
+            var domainEvents = allEvents.Select(e =>
+            {
+                var assemblyQualifiedName = JsonConvert.DeserializeObject<string>(e.AssemblyQualifiedName);
+                var eventType = Type.GetType(assemblyQualifiedName);
+                var data = JsonConvert.DeserializeObject(e.Data, eventType);
+
+                return data as IDomainEvent;
+            });
+
+            var aggregate = new Patient();
+            aggregate.Load(domainEvents);
+
+            return aggregate;
         }
 
         public async Task SaveAsync(Patient patient)
@@ -45,7 +77,7 @@ namespace WisdomPetMedicine.Hospital.Infrastructure
               .Select(e => new CosmosEventData()
               {
                   Id = Guid.NewGuid(),
-                  AggregateId = $"Patient-{patient.Id}",
+                  AggregateId = GetAggregateIdFromPatient(patient.Id),
                   EventName = e.GetType().Name,
                   Data = JsonConvert.SerializeObject(e),
                   AssemblyQualifiedName = JsonConvert.SerializeObject(e.GetType().AssemblyQualifiedName)
@@ -62,6 +94,11 @@ namespace WisdomPetMedicine.Hospital.Infrastructure
             }
 
             patient.ClearChanges();
+        }
+
+        private static string GetAggregateIdFromPatient(Guid id)
+        {
+            return $"Patient-{id}";
         }
     }
 }
