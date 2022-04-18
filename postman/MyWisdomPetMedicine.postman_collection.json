@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "1b17c6ba-dc52-45c9-b08b-211f54798940",
+		"name": "MyWisdomPetMedicine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local - Admit Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7205/hospital/patient/admit",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7205",
+					"path": [
+						"hospital",
+						"patient",
+						"admit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Local - Discharge Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7205/hospital/patient/discharge",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7205",
+					"path": [
+						"hospital",
+						"patient",
+						"discharge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Local - PetQuery",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7205/queries/pets/all",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7205",
+					"path": [
+						"queries",
+						"pets",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Local - PatientsQuery",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7205/queries/patients/all",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7205",
+					"path": [
+						"queries",
+						"patients",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Local - AdoptionsQuery",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7205/queries/adoptions/all",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7205",
+					"path": [
+						"queries",
+						"adoptions",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
