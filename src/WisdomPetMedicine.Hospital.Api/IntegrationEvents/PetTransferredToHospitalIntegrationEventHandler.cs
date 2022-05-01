@@ -4,6 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OpenTelemetry;
+using OpenTelemetry.Context.Propagation;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using WisdomPetMedicine.Hospital.Api.Infrastructure;
@@ -51,6 +55,10 @@ namespace WisdomPetMedicine.Hospital.Api.IntegrationEvents
             var theEvent = JsonConvert.DeserializeObject<PetTransferredToHospitalIntegrationEvent>(body);
             await args.CompleteMessageAsync(args.Message);
 
+            logger?.LogInformation($"Received message: {body}");
+
+            PropagateTracing(args.Message.ApplicationProperties, body);
+
             using var scope = serviceScopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<HospitalDbContext>();
 
@@ -74,6 +82,24 @@ namespace WisdomPetMedicine.Hospital.Api.IntegrationEvents
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
             await processor.StopProcessingAsync(cancellationToken);
+        }
+
+        private void PropagateTracing(IReadOnlyDictionary<string, object> carrier, string body)
+        {
+            var propagator = Propagators.DefaultTextMapPropagator;
+            using var activitySource = new ActivitySource("hospital-api");
+            var parentContext = propagator.Extract(default, carrier, (props, key) =>
+            {
+                var traceProperties = new List<string>();
+                if (props.TryGetValue(key, out var value))
+                {
+                    traceProperties.Add(value.ToString());
+                }
+                return traceProperties;
+            });
+            Baggage.Current = parentContext.Baggage;
+            using var activity = activitySource.StartActivity("hospital-consumer", ActivityKind.Consumer, parentContext.ActivityContext);
+            activity.SetTag("message", body);
         }
     }
 }

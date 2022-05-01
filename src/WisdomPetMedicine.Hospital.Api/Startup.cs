@@ -1,9 +1,12 @@
+using Azure.Monitor.OpenTelemetry.Exporter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using WisdomPetMedicine.Hospital.Api.ApplicationServices;
 using WisdomPetMedicine.Hospital.Api.Infrastructure;
 using WisdomPetMedicine.Hospital.Api.IntegrationEvents;
@@ -15,6 +18,7 @@ namespace WisdomPetMedicine.Hospital.Api
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        private const string ServiceName = "WisdomPetMedicine.Hospital.Api";
 
         public Startup(IConfiguration configuration)
         {
@@ -23,8 +27,25 @@ namespace WisdomPetMedicine.Hospital.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOpenTelemetryTracing(config =>
+            {
+                config.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName));
+                config.AddAzureMonitorTraceExporter(c =>
+                {
+                    c.ConnectionString = Configuration["AppInsights:ConnectionString"];
+                })
+                .AddJaegerExporter(o =>
+                {
+                    o.AgentHost = Configuration.GetValue<string>("Jaeger:Host");
+                    o.AgentPort = Configuration.GetValue<int>("Jaeger:Port");
+                }).AddSource("hospital-api")
+                  .AddAspNetCoreInstrumentation()
+                  .AddHttpClientInstrumentation()
+                  .AddSqlClientInstrumentation(s => s.SetDbStatementForText = true);
+            });
             services.AddHealthChecks()
-                .AddCosmosDbCheck(Configuration);
+                .AddCosmosDbCheck(Configuration)
+                .AddDbContextCheck<HospitalDbContext>();
             services.AddHospitalDb(Configuration);
             services.AddSingleton<IPatientAggregateStore, PatientAggregateStore>();
             services.AddScoped<HospitalApplicationService>();

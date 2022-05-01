@@ -1,7 +1,11 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using OpenTelemetry.Context.Propagation;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +23,16 @@ namespace WisdomPetMedicine.Pet.Api.ApplicationServices
     {
         private readonly IPetRepository petRepository;
         private readonly IBreedService breedService;
+        private readonly ILogger<PetApplicationService> logger;
 
         public PetApplicationService(IPetRepository petRepository,
                                      IBreedService breedService,
-                                     IConfiguration configuration)
+                                     IConfiguration configuration,
+                                     ILogger<PetApplicationService> logger)
         {
             this.petRepository = petRepository;
             this.breedService = breedService;
-
+            this.logger = logger;
             DomainEvents.PetFlaggedForAdoption.Register(async c =>
             {
                 var integrationEvent = new PetFlaggedForAdoptionIntegrationEvent()
@@ -78,6 +84,8 @@ namespace WisdomPetMedicine.Pet.Api.ApplicationServices
                 Subject = integrationEvent.GetType().FullName
             };
 
+            PropagateTracing(message.ApplicationProperties, jsonMessage);
+            logger?.LogInformation("Sending message: {payload}", jsonMessage);
             await sender.SendMessageAsync(message);
         }
 
@@ -131,6 +139,21 @@ namespace WisdomPetMedicine.Pet.Api.ApplicationServices
         {
             var pet = await petRepository.GetAsync(PetId.Create(command.Id));
             pet.TransferToHospital();
+        }
+
+        private void PropagateTracing(IDictionary<string, object> carrier, string message)
+        {
+            var propagator = Propagators.DefaultTextMapPropagator;
+            using var activitySource = new ActivitySource("pet-api");
+            using var activity = activitySource.StartActivity("pet-publisher", ActivityKind.Producer);
+            var propagationContext = new PropagationContext(activity.Context, OpenTelemetry.Baggage.Current);
+            propagator.Inject(propagationContext, carrier,
+                    (properties, key, value) =>
+                    {
+                        properties[key] = value;
+                    });
+
+            activity.SetTag("message", message);
         }
     }
 }
