@@ -2,23 +2,24 @@ using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
-namespace WisdomPetMedicine.RescueQuery.API.Controllers
-{
-    [ApiController]
-    [Route("[controller]")]
-    public class RescueQueryController : ControllerBase
-    {
-        private readonly IConfiguration _configuration;
-        
-        public RescueQueryController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+namespace WisdomPetMedicine.RescueQuery.API.Controllers.V1;
 
-        [HttpGet]
-        public async Task<IActionResult> GetAsync()
-        {
-            string sql = @"SELECT 
+[ApiVersion("1.0")]
+[ApiController]
+[Route("[controller]")]
+public class RescueQueryController : ControllerBase
+{
+    private readonly IConfiguration _configuration;
+
+    public RescueQueryController(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAsync()
+    {
+        string sql = @"SELECT 
                         ram.Id, 
                         ram.Name,
                         ram.Breed,
@@ -49,9 +50,8 @@ namespace WisdomPetMedicine.RescueQuery.API.Controllers
                         FROM RescuedAnimalsMetadata ram
                         JOIN RescuedAnimals ra ON ram.Id = ra.Id
                         LEFT JOIN Adopters a ON ra.AdopterId_Value = a.Id";
-            using var connection = new SqlConnection(_configuration.GetConnectionString("Rescue"));
-            var orderDetail = (await connection.QueryAsync(sql)).ToList();
-            return Ok(orderDetail);
-        }
+        using var connection = new SqlConnection(_configuration.GetConnectionString("Rescue"));
+        var orderDetail = (await connection.QueryAsync(sql)).ToList();
+        return Ok(orderDetail);
     }
 }
