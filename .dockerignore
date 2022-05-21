@@ -8,7 +8,7 @@
 **/.toolstarget
 **/.vs
 **/.vscode
-**/*.*proj.user
+**/*.user
 **/*.dbmdl
 **/*.jfm
 **/azds.yaml
@@ -21,5 +21,11 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+**/*.tmp
+**/*.log
+**/*.orig
+**/k8s.yaml
+**/appsettings.Development.json
+**/launchSettings.json
 LICENSE
 README.md

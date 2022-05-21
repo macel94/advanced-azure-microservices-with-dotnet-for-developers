@@ -452,3 +452,19 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# built files
+**/bin
+**/obj
+# user-specific files
+**/*.user
+**/.vs
+**/.vscode
+# downloaded libraries
+**/node_modules
+# temp files
+**/*.tmp
+*.log
+*.orig
+# secrets
+.env
