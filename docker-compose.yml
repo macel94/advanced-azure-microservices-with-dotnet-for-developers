@@ -13,13 +13,11 @@ services:
       context: .
       dockerfile: src/WisdomPetMedicine.Hospital.Projector/Dockerfile
 
-
   wisdompetmedicine.pet.api:
     image: ${DOCKER_REGISTRY-}wisdompetmedicinepetapi
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Pet.Api/Dockerfile
-
 
   wisdompetmedicine.rescue.api:
     image: ${DOCKER_REGISTRY-}wisdompetmedicinerescueapi
@@ -27,10 +25,9 @@ services:
       context: .
       dockerfile: src/WisdomPetMedicine.Rescue.Api/Dockerfile
 
-
   wisdompetmedicine.rescuequery.api:
     image: ${DOCKER_REGISTRY-}wisdompetmedicinerescuequeryapi
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.RescueQuery.API/Dockerfile
-
+      
