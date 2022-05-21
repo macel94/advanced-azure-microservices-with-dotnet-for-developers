@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "WisdomPetMedicine.Hospital.Projector": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 34847,
+      "useSSL": false
+    }
+  }
+}
