@@ -5,7 +5,7 @@ WORKDIR /home/site/wwwroot
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/runtime:3.1 as runtime3_1
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 # Copy .NET Core 3.1 runtime from the 3.1 image
 COPY --from=runtime3_1 /usr/share/dotnet/host /usr/share/dotnet/host
 COPY --from=runtime3_1 /usr/share/dotnet/shared /usr/share/dotnet/shared
@@ -15,12 +15,14 @@ COPY ["src/WisdomPetMedicine.Hospital.Domain/WisdomPetMedicine.Hospital.Domain.c
 COPY ["src/WisdomPetMedicine.Common/WisdomPetMedicine.Common.csproj", "src/WisdomPetMedicine.Common/"]
 COPY ["src/WisdomPetMedicine.Hospital.Infrastructure/WisdomPetMedicine.Hospital.Infrastructure.csproj", "src/WisdomPetMedicine.Hospital.Infrastructure/"]
 RUN dotnet restore "src/WisdomPetMedicine.Hospital.Projector/WisdomPetMedicine.Hospital.Projector.csproj"
+
 COPY . .
 WORKDIR "/src/src/WisdomPetMedicine.Hospital.Projector"
 RUN dotnet build "WisdomPetMedicine.Hospital.Projector.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "WisdomPetMedicine.Hospital.Projector.csproj" -c Release -o /app/publish
+RUN dotnet test -c Release
 
 FROM base AS final
 WORKDIR /home/site/wwwroot
