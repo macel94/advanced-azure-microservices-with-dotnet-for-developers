@@ -24,7 +24,7 @@ on:
 env:
   SERVICE: hospital-api
   IMAGE: hospital.api
-  REGISTRY_ENDPOINT: ghcr.io/{{ github.repository_owner }}/wisdompetmedicine
+  REGISTRY_ENDPOINT: ghcr.io/${{ github.repository_owner }}/wisdompetmedicine
   REGISTRY_HOST: ghcr.io
 
 jobs:
