@@ -1,0 +1,26 @@
+name: Docker Compose - build a PR
+
+on:
+  push:
+    branches:
+      - "!main"
+  pull_request:
+    branches:
+      - "**"
+
+  workflow_dispatch:
+
+env:
+  DOCKER_REGISTRY: ghcr.io
+  TAG: ${{ github.sha }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Docker Compose - build a PR
+        run: |
+          docker-compose build
