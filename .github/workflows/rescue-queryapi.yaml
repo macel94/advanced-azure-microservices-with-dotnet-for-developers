@@ -24,7 +24,7 @@ env:
   REGISTRY_HOST: ghcr.io
 
 jobs:
-  BuildContainersForPR_Linux:
+  BuildAndPushLinuxContainersContainersForPR:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
@@ -38,7 +38,7 @@ jobs:
           service: ${{ env.SERVICE }}
           registry_endpoint: ${{ env.REGISTRY_ENDPOINT_LC }}
 
-  BuildLinux:
+  BuildAndPushLinuxContainers:
     runs-on: ubuntu-latest
     permissions:
       contents: read
