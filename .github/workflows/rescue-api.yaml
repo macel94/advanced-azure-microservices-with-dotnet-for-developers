@@ -1,0 +1,64 @@
+name: rescue-api
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+    paths:
+      - src/WisdomPetMedicine.Rescue.Api/**
+      - src/WisdomPetMedicine.Rescue.Domain/**
+      - src/WisdomPetMedicine.Common/**
+      - .github/workflows/rescue-api.yaml
+
+  pull_request:
+    branches:
+      - main
+
+    paths:
+      - src/WisdomPetMedicine.Rescue.Api/**
+      - src/WisdomPetMedicine.Rescue.Domain/**
+      - src/WisdomPetMedicine.Common/**
+      - .github/workflows/rescue-api.yaml
+env:
+  SERVICE: rescue-api
+  IMAGE: rescue.api
+  REGISTRY_ENDPOINT: ghcr.io/${{ github.repository_owner }}/wisdompetmedicine
+  REGISTRY_HOST: ghcr.io
+
+jobs:
+  BuildContainersForPR_Linux:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: downcase REPO
+        run: |
+          echo "REGISTRY_ENDPOINT_LC=${REGISTRY_ENDPOINT,,}" >>${GITHUB_ENV}
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: ./.github/workflows/composite/build
+        with:
+          service: ${{ env.SERVICE }}
+          registry_endpoint: ${{ env.REGISTRY_ENDPOINT_LC }}
+
+  BuildLinux:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - name: downcase REPO
+        run: |
+          echo "REGISTRY_ENDPOINT_LC=${REGISTRY_ENDPOINT,,}" >>${GITHUB_ENV}
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: ./.github/workflows/composite/build-push
+        with:
+          service: ${{ env.SERVICE }}
+          registry_host: ${{ env.REGISTRY_HOST }}
+          registry_endpoint: ${{ env.REGISTRY_ENDPOINT_LC }}
+          image_name: ${{ env.IMAGE }}
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
