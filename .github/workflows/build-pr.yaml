@@ -20,4 +20,4 @@ jobs:
       - name: Docker Compose - build a PR
         run: |
           export TAG=${{ github.sha }}
-          docker-compose build .
+          docker-compose build
