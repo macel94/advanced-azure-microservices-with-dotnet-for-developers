@@ -10,7 +10,7 @@ on:
       - src/WisdomPetMedicine.Hospital.Api/**
       - src/WisdomPetMedicine.Hospital.Domain/**
       - src/WisdomPetMedicine.Hospital.Infrastructure/**
-      - .github/workflows/hospital-api.yml
+      - .github/workflows/hospital-api.yaml
 
   pull_request:
     branches:
@@ -20,11 +20,11 @@ on:
       - src/WisdomPetMedicine.Hospital.Api/**
       - src/WisdomPetMedicine.Hospital.Domain/**
       - src/WisdomPetMedicine.Hospital.Infrastructure/**
-      - .github/workflows/hospital-api.yml
+      - .github/workflows/hospital-api.yaml
 env:
   SERVICE: hospital-api
   IMAGE: hospital.api
-  REGISTRY_ENDPOINT: ghcr.io/${{ github.repository }}
+  REGISTRY_ENDPOINT: ghcr.io/{{ github.repository_owner }}/wisdompetmedicine
   REGISTRY_HOST: ghcr.io
 
 jobs:
@@ -32,12 +32,15 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
+      - name: downcase REPO
+        run: |
+          echo "REGISTRY_ENDPOINT_LC=${REGISTRY_ENDPOINT,,}" >>${GITHUB_ENV}
       - name: Checkout code
         uses: actions/checkout@v3
       - uses: ./.github/workflows/composite/build
         with:
           service: ${{ env.SERVICE }}
-          registry_endpoint: ${{ env.REGISTRY_ENDPOINT }}
+          registry_endpoint: ${{ env.REGISTRY_ENDPOINT_LC }}
 
   BuildLinux:
     runs-on: ubuntu-latest
@@ -46,13 +49,16 @@ jobs:
       packages: write
     if: ${{ github.event_name != 'pull_request' }}
     steps:
+      - name: downcase REPO
+        run: |
+          echo "REGISTRY_ENDPOINT_LC=${REGISTRY_ENDPOINT,,}" >>${GITHUB_ENV}
       - name: Checkout code
         uses: actions/checkout@v3
       - uses: ./.github/workflows/composite/build-push
         with:
           service: ${{ env.SERVICE }}
           registry_host: ${{ env.REGISTRY_HOST }}
-          registry_endpoint: ${{ env.REGISTRY_ENDPOINT }}
+          registry_endpoint: ${{ env.REGISTRY_ENDPOINT_LC }}
           image_name: ${{ env.IMAGE }}
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GITHUB_TOKEN }}
