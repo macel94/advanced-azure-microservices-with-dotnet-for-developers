@@ -1,4 +1,4 @@
-name: hospital-api
+name: hospital-projector
 
 on:
   workflow_dispatch:
@@ -7,25 +7,25 @@ on:
       - main
 
     paths:
-      - src/WisdomPetMedicine.Hospital.Api/**
+      - src/WisdomPetMedicine.Hospital.Projector/**
       - src/WisdomPetMedicine.Hospital.Domain/**
       - src/WisdomPetMedicine.Hospital.Infrastructure/**
       - src/WisdomPetMedicine.Common/**
-      - .github/workflows/hospital-api.yaml
+      - .github/workflows/hospital-projector.yaml
 
   pull_request:
     branches:
       - main
 
     paths:
-      - src/WisdomPetMedicine.Hospital.Api/**
+      - src/WisdomPetMedicine.Hospital.Projector/**
       - src/WisdomPetMedicine.Hospital.Domain/**
       - src/WisdomPetMedicine.Hospital.Infrastructure/**
       - src/WisdomPetMedicine.Common/**
-      - .github/workflows/hospital-api.yaml
+      - .github/workflows/hospital-projector.yaml
 env:
-  SERVICE: hospital-api
-  IMAGE: hospital.api
+  SERVICE: hospital-projector
+  IMAGE: hospital.projector
   REGISTRY_ENDPOINT: ghcr.io/${{ github.repository_owner }}/wisdompetmedicine
   REGISTRY_HOST: ghcr.io
 

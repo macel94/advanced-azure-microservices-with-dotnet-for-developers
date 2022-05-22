@@ -3,31 +3,31 @@ version: '3.8'
 
 services:
   hospital-api:
-    image: ${REGISTRY-wisdompetmedicine}/hospital.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY-local/wisdompetmedicine}/hospital.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Hospital.Api/Dockerfile
 
   hospital-projector:
-    image: ${REGISTRY-wisdompetmedicine}/hospital.projector:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY-local/wisdompetmedicine}/hospital.projector:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Hospital.Projector/Dockerfile
 
   pet-api:
-    image: ${REGISTRY-wisdompetmedicine}/pet.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY-local/wisdompetmedicine}/pet.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Pet.Api/Dockerfile
 
   rescue-api:
-    image: ${REGISTRY-wisdompetmedicine}/rescue.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY-local/wisdompetmedicine}/rescue.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Rescue.Api/Dockerfile
 
   rescuequery-api:
-    image: ${REGISTRY-wisdompetmedicine}/rescue.queryapi:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY-local/wisdompetmedicine}/rescue.queryapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.RescueQuery.API/Dockerfile
