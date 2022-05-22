@@ -12,7 +12,7 @@ env:
   TAG: ${{ github.sha }}
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
