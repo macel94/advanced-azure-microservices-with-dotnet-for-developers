@@ -22,8 +22,8 @@ on:
       - src/WisdomPetMedicine.Hospital.Infrastructure/**
       - .github/workflows/wisdompetmedicine-hospital-api.yml
 env:
-  SERVICE: wisdompetmedicine-hospital-api
-  IMAGE: wisdompetmedicine.hospital.api
+  SERVICE: hospital-api
+  IMAGE: hospital.api
   REGISTRY_ENDPOINT: ghcr.io/wisdompetmedicine
   REGISTRY_HOST: ghcr.io
 
