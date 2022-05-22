@@ -1,4 +1,4 @@
-name: wisdompetmedicine-hospital-api
+name: hospital-api
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
       - src/WisdomPetMedicine.Hospital.Api/**
       - src/WisdomPetMedicine.Hospital.Domain/**
       - src/WisdomPetMedicine.Hospital.Infrastructure/**
-      - .github/workflows/wisdompetmedicine-hospital-api.yml
+      - .github/workflows/hospital-api.yml
 
   pull_request:
     branches:
@@ -20,7 +20,7 @@ on:
       - src/WisdomPetMedicine.Hospital.Api/**
       - src/WisdomPetMedicine.Hospital.Domain/**
       - src/WisdomPetMedicine.Hospital.Infrastructure/**
-      - .github/workflows/wisdompetmedicine-hospital-api.yml
+      - .github/workflows/hospital-api.yml
 env:
   SERVICE: hospital-api
   IMAGE: hospital.api
