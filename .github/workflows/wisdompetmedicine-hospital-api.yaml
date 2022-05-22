@@ -1,0 +1,55 @@
+name: wisdompetmedicine-hospital-api
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+    paths:
+      - src/WisdomPetMedicine.Hospital.Api/**
+      - src/WisdomPetMedicine.Hospital.Domain/**
+      - src/WisdomPetMedicine.Hospital.Infrastructure/**
+      - .github/workflows/wisdompetmedicine-hospital-api.yml
+
+  pull_request:
+    branches:
+      - main
+
+    paths:
+      - src/WisdomPetMedicine.Hospital.Api/**
+      - src/WisdomPetMedicine.Hospital.Domain/**
+      - src/WisdomPetMedicine.Hospital.Infrastructure/**
+      - .github/workflows/wisdompetmedicine-hospital-api.yml
+env:
+  SERVICE: wisdompetmedicine-hospital-api
+  IMAGE: wisdompetmedicine.hospital.api
+  REGISTRY_ENDPOINT: ghcr.io/wisdompetmedicine
+  REGISTRY_HOST: ghcr.io
+
+jobs:
+  BuildContainersForPR_Linux:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: ./.github/workflows/composite/build
+        with:
+          service: ${{ env.SERVICE }}
+          registry_endpoint: ${{ env.REGISTRY_ENDPOINT }}
+
+  BuildLinux:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: ./.github/workflows/composite/build-push
+        with:
+          service: ${{ env.SERVICE }}
+          registry_host: ${{ env.REGISTRY_HOST }}
+          registry_endpoint: ${{ env.REGISTRY_ENDPOINT }}
+          image_name: ${{ env.IMAGE }}
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
