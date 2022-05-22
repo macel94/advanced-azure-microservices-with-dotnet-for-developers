@@ -2,32 +2,32 @@
 version: '3.8'
 
 services:
-  wisdompetmedicine.hospital.api:
-    image: ${DOCKER_REGISTRY-}wisdompetmedicinehospitalapi:${TAG}
+  hospital-api:
+    image: ${REGISTRY-wisdompetmedicine}/hospitalapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Hospital.Api/Dockerfile
 
-  wisdompetmedicine.hospital.projector:
-    image: ${DOCKER_REGISTRY-}wisdompetmedicinehospitalprojector:${TAG}
+  hospital-projector:
+    image: ${REGISTRY-wisdompetmedicine}/hospitalprojector:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Hospital.Projector/Dockerfile
 
-  wisdompetmedicine.pet.api:
-    image: ${DOCKER_REGISTRY-}wisdompetmedicinepetapi:${TAG}
+  pet-api:
+    image: ${REGISTRY-wisdompetmedicine}/petapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Pet.Api/Dockerfile
 
-  wisdompetmedicine.rescue.api:
-    image: ${DOCKER_REGISTRY-}wisdompetmedicinerescueapi:${TAG}
+  rescue-api:
+    image: ${REGISTRY-wisdompetmedicine}/rescueapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Rescue.Api/Dockerfile
 
-  wisdompetmedicine.rescuequery.api:
-    image: ${DOCKER_REGISTRY-}wisdompetmedicinerescuequeryapi:${TAG}
+  rescuequery-api:
+    image: ${REGISTRY-wisdompetmedicine}/rescuequeryapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.RescueQuery.API/Dockerfile
