@@ -5,3 +5,5 @@ repo created following and integrating with the course https://www.linkedin.com/
 # Dotnet Foundation
 
 this repo also is inspired from https://github.com/dotnet-architecture/eShopOnContainers
+
+test repo for my public experiments
