@@ -1,4 +1,4 @@
-name: rescuequery-api
+name: rescue-queryapi
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
 
     paths:
       - src/WisdomPetMedicine.RescueQuery.API/**
-      - .github/workflows/rescuequery-api.yaml
+      - .github/workflows/rescue-queryapi.yaml
 
   pull_request:
     branches:
@@ -16,10 +16,10 @@ on:
 
     paths:
       - src/WisdomPetMedicine.RescueQuery.API/**
-      - .github/workflows/rescuequery-api.yaml
+      - .github/workflows/rescue-queryapi.yaml
 env:
-  SERVICE: rescuequery-api
-  IMAGE: rescuequery.api
+  SERVICE: rescue-queryapi
+  IMAGE: rescue.queryapi
   REGISTRY_ENDPOINT: ghcr.io/${{ github.repository_owner }}/wisdompetmedicine
   REGISTRY_HOST: ghcr.io
 
