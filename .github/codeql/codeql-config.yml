@@ -4,6 +4,6 @@ queries:
   - uses: security-and-quality
 
 paths-ignore: 
-  - src/**/wwwroot/lib
-  - src/**/obj
-  - src/**/bin
+  - **/wwwroot/lib
+  - **/obj
+  - **/bin
