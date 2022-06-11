@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using System;
 using WisdomPetMedicine.Hospital.Domain.Entities;
 
 namespace WisdomPetMedicine.Hospital.Projector

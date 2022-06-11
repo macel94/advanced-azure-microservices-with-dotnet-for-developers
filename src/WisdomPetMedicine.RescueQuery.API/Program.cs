@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using WisdomPetMedicine.RescueQuery.Api.Swagger;
 
@@ -21,7 +20,7 @@ if (app.Environment.IsDevelopment())
     app.UseMultiversionSwagger(app.Services.GetRequiredService<IApiVersionDescriptionProvider>());
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

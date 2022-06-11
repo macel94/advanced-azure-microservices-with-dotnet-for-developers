@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using WisdomPetMedicine.Pet.Api.ApplicationServices;
-using WisdomPetMedicine.Pet.Api.Commands;
 using Dapper;
 using System.Linq;
 

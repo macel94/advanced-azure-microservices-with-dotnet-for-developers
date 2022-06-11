@@ -2,11 +2,71 @@
 version: '3.8'
 
 services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778/udp"
+      - "16686:16686/udp"
+      - "14268:14268/udp"
+      - "14250:14250/udp"
+      - "9411:9411/udp"
+  
+  cosmosdb:
+    container_name: cosmosdb
+    mem_limit: 3g
+    cpu_count: 2
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+    tty: true
+    restart: always
+    environment:
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
+      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+    ports:
+      - "8081:8081"
+      - "10250:10250"
+      - "10251:10251"
+      - "10252:10252"
+      - "10253:10253"
+      - "10254:10254"
+
+  sqldb:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    environment:
+      - SA_PASSWORD=MyComplexP@ssword!
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
   hospital-api:
     image: ${REGISTRY-local/wisdompetmedicine}/hospital.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Hospital.Api/Dockerfile
+    ports:
+      - "5100:80"
+    environment:
+      - AllowedHosts=*
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+      - ConnectionStrings__Hospital=Data Source=sqldb,1433;Initial Catalog=Hospital;User Id=sa;Password=MyComplexP@ssword!
+      - ServiceBus__ConnectionString=${REGISTRY-}
+      - ServiceBus__TopicName=pet-transferred-to-hospital
+      - ServiceBus__SubscriptionName=pet-transferred-to-hospital
+      - CosmosDb__ConnectionString=AccountEndpoint=http://cosmosdb:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;
+      - CosmosDb__DatabaseId=WisdomPetMedicine
+      - CosmosDb__ContainerId=Patients
+      - Jaeger__Host=jaeger
+      - Jaeger__Port=6831
+      
+    depends_on:
+      - sqldb
+      - cosmosdb
+      - jaeger
 
   hospital-projector:
     image: ${REGISTRY-local/wisdompetmedicine}/hospital.projector:${PLATFORM:-linux}-${TAG:-latest}
@@ -19,16 +79,21 @@ services:
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Pet.Api/Dockerfile
+    ports:
+      - "5101:80"
 
   rescue-api:
     image: ${REGISTRY-local/wisdompetmedicine}/rescue.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.Rescue.Api/Dockerfile
+    ports:
+      - "5102:80"
 
   rescue-queryapi:
     image: ${REGISTRY-local/wisdompetmedicine}/rescue.queryapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/WisdomPetMedicine.RescueQuery.API/Dockerfile
-      
+    ports:
+      - "5103:80"
