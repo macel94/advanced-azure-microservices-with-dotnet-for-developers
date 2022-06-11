@@ -18,7 +18,21 @@
     // Configure properties specific to VS Code.
     "vscode": {
       // Add the IDs of extensions you want installed when the container is created.
-      "extensions": ["ms-dotnettools.csharp", "ms-azuretools.vscode-docker"]
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-azuretools.vscode-docker",
+        "bencoleman.armview",
+        "ms-vscode.azure-account",
+        "ms-azuretools.vscode-azureappservice",
+        "ms-vscode.azurecli",
+        "ms-azuretools.vscode-cosmosdb",
+        "ms-azuretools.vscode-azurefunctions",
+        "ms-vscode.vscode-node-azure-pack",
+        "ms-azuretools.vscode-bicep",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-dotnettools.blazorwasm-companion",
+        "esbenp.prettier-vscode"
+      ]
     }
   },
 
