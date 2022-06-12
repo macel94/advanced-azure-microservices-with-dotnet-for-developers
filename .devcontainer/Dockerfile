@@ -12,11 +12,11 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 ARG PS_VERSION="7.2.4"
 RUN ARCH="$(dpkg --print-architecture)"; \
     if [ "${ARCH}" = "amd64" ]; then \
-        PS_BIN="v$PS_VERSION/powershell-$PS_VERSION-linux-x64.tar.gz"; \
+    PS_BIN="v$PS_VERSION/powershell-$PS_VERSION-linux-x64.tar.gz"; \
     elif [ "${ARCH}" = "arm64" ]; then \
-        PS_BIN="v$PS_VERSION/powershell-$PS_VERSION-linux-arm64.tar.gz"; \
+    PS_BIN="v$PS_VERSION/powershell-$PS_VERSION-linux-arm64.tar.gz"; \
     elif [ "${ARCH}" = "armhf" ]; then \
-        PS_BIN="v$PS_VERSION/powershell-$PS_VERSION-linux-arm32.tar.gz"; \
+    PS_BIN="v$PS_VERSION/powershell-$PS_VERSION-linux-arm32.tar.gz"; \
     fi; \
     wget https://github.com/PowerShell/PowerShell/releases/download/$PS_BIN -O pwsh.tar.gz; \
     mkdir /usr/local/pwsh && \

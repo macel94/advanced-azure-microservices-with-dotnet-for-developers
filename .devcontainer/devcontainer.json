@@ -58,10 +58,7 @@
       "extensions": [
         "ms-dotnettools.csharp",
         "ms-azuretools.vscode-docker",
-        "bencoleman.armview",
         "ms-vscode.azure-account",
-        "ms-vscode.powershell",
-        "ms-azuretools.vscode-azureappservice",
         "ms-vscode.azurecli",
         "ms-azuretools.vscode-cosmosdb",
         "ms-azuretools.vscode-azurefunctions",
