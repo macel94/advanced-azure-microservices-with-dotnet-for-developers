@@ -73,8 +73,7 @@ RUN sed -i 's/^__bash_prompt$/#&/' /home/${USERNAME}/.bashrc && \
 RUN echo "eval \"\$(oh-my-posh init zsh --config $POSH_THEME)\"" >> /home/${USERNAME}/.zshrc
 
 RUN apt-get install fontconfig
-RUN wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/CascadiaCode/Regular/complete/Caskaydia%20Cove%20Regular%20Nerd%20Font%20Complete%20Mono.otf -O ~/.fonts
-RUN chmod 644 -R ~/.fonts
+RUN wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/CascadiaCode/Bold/complete/Caskaydia%20Cove%20Bold%20Nerd%20Font%20Complete%20Mono.otf -P /usr/share/fonts
 RUN fc-cache -fv
 
 # Set container timezone:
