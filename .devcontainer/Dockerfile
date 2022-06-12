@@ -27,6 +27,7 @@ ENV PATH=$PATH:/usr/local/pwsh
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y --no-install-recommends \
+    fish \
     tmux \
     && apt-get clean
 
@@ -51,8 +52,14 @@ RUN pwsh -Command Install-Module posh-git -Scope AllUsers -Force; \
 # add the oh-my-posh path to the PATH variable
 ENV PATH "$PATH:/home/${USERNAME}/bin"
 
+# Can be used to override the devcontainer prompt default theme:
+ENV POSH_THEME="/workspaces/advanced-azure-microservices-with-dotnet/.devcontainer/themes/cloud-native-azure.omp.json"
+
 # Deploy oh-my-posh prompt to Powershell:
 COPY Microsoft.PowerShell_profile.ps1 /home/${USERNAME}/.config/powershell/Microsoft.PowerShell_profile.ps1
+
+# Deploy oh-my-posh prompt to Fish:
+COPY config.fish /home/${USERNAME}/.config/fish/config.fish
 
 # Everything runs as root during build time, so we want
 # to make sure the vscode user can edit these paths too:
@@ -61,6 +68,9 @@ RUN chmod 777 -R /home/${USERNAME}/.config
 # Override vscode's own Bash prompt with oh-my-posh:
 RUN sed -i 's/^__bash_prompt$/#&/' /home/${USERNAME}/.bashrc && \
     echo "eval \"\$(oh-my-posh init bash --config $POSH_THEME)\"" >> /home/${USERNAME}/.bashrc
+
+# Override vscode's own ZSH prompt with oh-my-posh:
+RUN echo "eval \"\$(oh-my-posh init zsh --config $POSH_THEME)\"" >> /home/${USERNAME}/.zshrc
 
 # Set container timezone:
 ARG TZ="UTC"

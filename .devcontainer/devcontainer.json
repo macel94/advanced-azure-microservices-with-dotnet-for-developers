@@ -19,7 +19,37 @@
       "POSH_THEME": "/workspaces/advanced-azure-microservices-with-dotnet/.devcontainer/themes/cloud-native-azure.omp.json"
     }
   },
-
+  "runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    // "go.toolsManagement.checkForUpdates": "local",
+    // "go.useLanguageServer": true,
+    // "go.gopath": "/go",
+    // "go.goroot": "/usr/local/go",
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "bash"
+      },
+      "zsh": {
+        "path": "zsh"
+      },
+      "fish": {
+        "path": "fish"
+      },
+      "tmux": {
+        "path": "tmux",
+        "icon": "terminal-tmux"
+      },
+      "pwsh": {
+        "path": "pwsh",
+        "icon": "terminal-powershell"
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "pwsh",
+    "terminal.integrated.defaultProfile.windows": "pwsh",
+    "terminal.integrated.defaultProfile.osx": "pwsh",
+    "tasks.statusbar.default.hide": true
+  },
   // Configure tool-specific properties.
   "customizations": {
     // Configure properties specific to VS Code.
@@ -30,6 +60,7 @@
         "ms-azuretools.vscode-docker",
         "bencoleman.armview",
         "ms-vscode.azure-account",
+        "ms-vscode.powershell",
         "ms-azuretools.vscode-azureappservice",
         "ms-vscode.azurecli",
         "ms-azuretools.vscode-cosmosdb",
@@ -38,7 +69,8 @@
         "ms-azuretools.vscode-bicep",
         "ms-kubernetes-tools.vscode-kubernetes-tools",
         "ms-dotnettools.blazorwasm-companion",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "redhat.vscode-yaml"
       ]
     }
   },
@@ -81,6 +113,6 @@
     "kubectl-helm-minikube": "latest",
     "git": "latest",
     "github-cli": "latest",
-    "azure-cli": "latest",
+    "azure-cli": "latest"
   }
 }
