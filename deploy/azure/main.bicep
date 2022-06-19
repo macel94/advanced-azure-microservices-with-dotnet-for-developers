@@ -1,40 +1,19 @@
-//az deployment group create --resource-group fb-linkedin-ddd-course --template-file main.bicep
+//az deployment group create --resource-group fb-linkedin-ddd-course-new-subscription --template-file main.bicep
 param location string = resourceGroup().location
 param sqlAdministratorLogin string
 @secure()
 param sqlAdministratorLoginPassword string
 
-resource azbus 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
-  location: location
-  name: 'fb-course-azbus'
-  properties: {
-    zoneRedundant: false
-  }
-}
-
-resource petflaggedtopic 'Microsoft.ServiceBus/namespaces/topics@2021-11-01' = {
-  name: 'pet-flagged-for-adoption'
-  parent: azbus
-}
-
-resource pettransferredtopic 'Microsoft.ServiceBus/namespaces/topics@2021-11-01' = {
-  name: 'pet-transferred-to-hospital'
-  parent: azbus
-}
-
-resource petflaggedsub 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2021-11-01' = {
-  name: 'pet-flagged-for-adoption'
-  parent: petflaggedtopic
-}
-
-resource pettransferredsub 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2021-11-01' = {
-  name: 'pet-transferred-to-hospital'
-  parent: pettransferredtopic
-}
-
 var accountName = 'cosmos-${uniqueString(resourceGroup().id)}'
 var databaseName = 'WisdomPetMedicine'
 var containerName = 'Patients'
+
+module asb './ESB/asb.bicep' = {
+  name: 'asbDeploy'
+  params: {
+    location: location
+  }
+}
 
 resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = {
   name: toLower(accountName)
@@ -125,7 +104,6 @@ output petCS string = 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDoma
 output rescueCS string = 'Data Source=tcp:${sqlserver.properties.fullyQualifiedDomainName},1433;Initial Catalog=Rescue;User Id=${sqlAdministratorLogin}@${sqlserver.properties.fullyQualifiedDomainName};Password=${sqlAdministratorLoginPassword};'
 
 // todo:
-// add acr
 // add kv and put every secret in there
-// add aks with integrated ingress, acr and kv
+// add aks with integrated ingress, kv
 // deploy jaeger
