@@ -9,6 +9,6 @@
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
   },
   "ConnectionStrings": {
-    "Hospital": "Data Source=localhost\\sqlexpress;Initial Catalog=Hospital;Integrated Security=true;"
+    "Hospital": "Data Source=localhost\\sqlexpress;Initial Catalog=Hospital;Integrated Security=true;Encrypt=false;"
   }
 }
