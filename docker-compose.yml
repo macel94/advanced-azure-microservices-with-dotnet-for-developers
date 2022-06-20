@@ -53,8 +53,8 @@ services:
     environment:
       - AllowedHosts=*
       - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-      - ConnectionStrings__Hospital=Data Source=sqldb,1433;Initial Catalog=Hospital;User Id=sa;Password=MyComplexP@ssword!
-      - ServiceBus__ConnectionString=${AZSERVICEBUSCS:-}
+      - ConnectionStrings__Hospital=Data Source=sqldb,1433;Initial Catalog=Hospital;User Id=sa;Password=MyComplexP@ssword!;Encrypt=false;
+      - ServiceBus__ConnectionString=${AZSERVICEBUSSECRET:-}
       - ServiceBus__TopicName=pet-transferred-to-hospital
       - ServiceBus__SubscriptionName=pet-transferred-to-hospital
       - CosmosDb__ConnectionString=AccountEndpoint=http://cosmosdb:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;
