@@ -20,6 +20,12 @@ RUN dotnet publish "WisdomPetMedicine.Pet.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 ENV ASPNETCORE_ENVIRONMENT Production
+
+# Install cultures (same approach as Alpine SDK image)
+RUN apk add --no-cache icu-libs
+
+# Disable the invariant mode (set in base image)
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV ASPNETCORE_URLS http://+:80
 EXPOSE 80
 
