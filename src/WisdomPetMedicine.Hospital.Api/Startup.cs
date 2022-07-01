@@ -30,11 +30,17 @@ namespace WisdomPetMedicine.Hospital.Api
             services.AddOpenTelemetryTracing(config =>
             {
                 config.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(ServiceName));
-                config.AddAzureMonitorTraceExporter(c =>
+                string appinsightsCs = Configuration["AppInsights:ConnectionString"];
+
+                if (!string.IsNullOrWhiteSpace(appinsightsCs))
                 {
-                    c.ConnectionString = Configuration["AppInsights:ConnectionString"];
-                })
-                .AddJaegerExporter(o =>
+                    config.AddAzureMonitorTraceExporter(c =>
+                    {
+                        c.ConnectionString = appinsightsCs;
+                    });
+                }
+                
+                config.AddJaegerExporter(o =>
                 {
                     o.AgentHost = Configuration.GetValue<string>("Jaeger:Host");
                     o.AgentPort = Configuration.GetValue<int>("Jaeger:Port");
@@ -65,7 +71,7 @@ namespace WisdomPetMedicine.Hospital.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WisdomPetMedicine.Hospital.Api v1"));
             }
             app.EnsureHospitalDbIsCreated();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

@@ -42,7 +42,7 @@ namespace WisdomPetMedicine.Rescue.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WisdomPetMedicine.Rescue.Api v1"));
             }
             app.EnsureRescueDbIsCreated();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

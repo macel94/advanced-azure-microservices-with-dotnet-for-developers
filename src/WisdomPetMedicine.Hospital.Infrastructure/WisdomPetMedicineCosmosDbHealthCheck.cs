@@ -19,6 +19,8 @@ namespace WisdomPetMedicine.Hospital.Infrastructure
             await cosmosClient.ReadAccountAsync();
             var databaseId = configuration["CosmosDb:DatabaseId"];
             var containerId = configuration["CosmosDb:ContainerId"];
+            var response = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
+            await response.Database.CreateContainerIfNotExistsAsync(new ContainerProperties(containerId, "aggregateId"));
             var container = cosmosClient.GetContainer(databaseId, containerId);
             var containerProperties = await container.ReadContainerAsync(cancellationToken: cancellationToken);
             return containerProperties.StatusCode == System.Net.HttpStatusCode.OK ? HealthCheckResult.Healthy() :

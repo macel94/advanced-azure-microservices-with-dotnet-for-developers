@@ -7,3 +7,5 @@ repo created following and integrating with the course https://www.linkedin.com/
 this repo also is inspired from https://github.com/dotnet-architecture/eShopOnContainers
 
 test repo for my public experiments
+
+OhMyPosh installation is custom but strongly inspired by  https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/.devcontainer/devcontainer.json
