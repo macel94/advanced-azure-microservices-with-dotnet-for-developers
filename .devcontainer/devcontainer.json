@@ -101,7 +101,7 @@
   // ],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "./src/scripts/trust_cosmos_db_emulator_crt.sh && dotnet restore MyWisdomPetMedicine.sln && docker-compose build && nohup bash -c 'minikube start &' > minikube.log 2>&1",
+  "postCreateCommand": "dotnet restore MyWisdomPetMedicine.sln && docker-compose build && nohup bash -c 'minikube start &' > minikube.log 2>&1",
   "postStartCommand": "dotnet restore MyWisdomPetMedicine.sln && docker-compose build && nohup bash -c 'minikube start &' > minikube.log 2>&1",
 
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
