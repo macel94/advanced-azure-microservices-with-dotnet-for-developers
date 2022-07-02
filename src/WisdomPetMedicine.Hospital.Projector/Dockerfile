@@ -3,6 +3,8 @@
 FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated6.0 AS base
 WORKDIR /home/site/wwwroot
 EXPOSE 80
+COPY /src/WisdomPetMedicine.Hospital.Projector/cosmosdbemulator.crt /usr/local/share/ca-certificates/
+RUN update-ca-certificates
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 WORKDIR /src
@@ -23,5 +25,6 @@ RUN dotnet test -c Release
 FROM base AS final
 WORKDIR /home/site/wwwroot
 COPY --from=publish /app/publish .
+
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true

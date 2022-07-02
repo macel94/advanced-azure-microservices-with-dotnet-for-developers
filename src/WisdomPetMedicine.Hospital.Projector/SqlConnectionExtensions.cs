@@ -8,7 +8,7 @@ namespace WisdomPetMedicine.Hospital.Projector
     {
         public static void EnsurePatientsTable(this SqlConnection conn)
         {
-            var query = @"
+            var query = @" 
                 IF (NOT EXISTS (SELECT * 
                  FROM INFORMATION_SCHEMA.TABLES 
                  WHERE TABLE_SCHEMA = 'dbo' 
