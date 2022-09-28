@@ -13,7 +13,7 @@
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="3.0.9" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.7.0" OutputItemType="Analyzer" />
-    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.8.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.9.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
