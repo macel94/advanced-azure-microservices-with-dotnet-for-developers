@@ -20,13 +20,16 @@ FROM base AS final
 ENV ASPNETCORE_ENVIRONMENT Production
 
 # Install cultures (same approach as Alpine SDK image)
-RUN apk add --no-cache icu-libs
+RUN apk add --no-cache icu-libs curl
 
 # Disable the invariant mode (set in base image)
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV ASPNETCORE_URLS http://+:80
 EXPOSE 80
 
+# Trust cosmosdb cert
+#RUN curl -k "${COSMOS_ENDPOINT}/_explorer/emulator.pem" -o '/usr/local/share/ca-certificates/emulator.crt'
+RUN update-ca-certificates
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "WisdomPetMedicine.RescueQuery.API.dll"]

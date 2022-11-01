@@ -8,7 +8,7 @@ var accountName = 'cosmos-${uniqueString(resourceGroup().id)}'
 var databaseName = 'WisdomPetMedicine'
 var containerName = 'Patients'
 
-module asb './ESB/asb.bicep' = {
+module asb './ASB/asb.bicep' = {
   name: 'asbDeploy'
   params: {
     location: location
@@ -19,7 +19,6 @@ resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview
   name: toLower(accountName)
   location: location
   properties: {
-    enableFreeTier: true
     databaseAccountOfferType: 'Standard'
     consistencyPolicy: {
       defaultConsistencyLevel: 'Session'

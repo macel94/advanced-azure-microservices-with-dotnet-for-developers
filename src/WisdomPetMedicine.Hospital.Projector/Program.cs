@@ -8,7 +8,7 @@ var host = new HostBuilder()
     .ConfigureServices(services =>
     {
         services.AddSingleton<IPatientAggregateStore, PatientAggregateStore>();
-    })
+    }) 
     .Build();
 
 host.Run();

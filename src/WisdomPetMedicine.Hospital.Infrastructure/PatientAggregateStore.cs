@@ -18,15 +18,25 @@ namespace WisdomPetMedicine.Hospital.Infrastructure
             var cs = configuration["CosmosDb:ConnectionString"];
             var dbId = configuration["CosmosDb:DatabaseId"];
             var containerId = configuration["CosmosDb:ContainerId"];
-
-            _client = new CosmosClient(cs, new CosmosClientOptions()
+            var cosmosClientOptions = new CosmosClientOptions()
             {
                 SerializerOptions = new CosmosSerializationOptions()
                 {
                     PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                }
-            });
+                },
+                HttpClientFactory = () =>
+                {
+                    HttpMessageHandler httpMessageHandler = new HttpClientHandler()
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    };
 
+                    return new HttpClient(httpMessageHandler);
+                },
+                ConnectionMode = ConnectionMode.Gateway
+            };
+
+            _client = new CosmosClient(cs, cosmosClientOptions);
             _container = _client.GetContainer(dbId, containerId);
         }
 

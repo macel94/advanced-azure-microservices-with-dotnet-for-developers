@@ -1,0 +1,3 @@
+Stop-Process -Name "Microsoft.Azure.Cosmos.*"
+$cosmosDb = Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall | % { Get-ItemProperty $_.PsPath } | where {$_.DisplayName -eq 'Azure Cosmos DB Emulator'} | Select InstallLocation
+& "$($cosmosDb.InstallLocation)\Microsoft.Azure.Cosmos.Emulator.exe" /FailOnSslCertificateNameMismatch /AllowNetworkAccess /Key=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==

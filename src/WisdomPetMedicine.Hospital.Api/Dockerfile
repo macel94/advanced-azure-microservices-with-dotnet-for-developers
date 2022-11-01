@@ -30,6 +30,10 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV ASPNETCORE_URLS http://+:80
 EXPOSE 80
 
+# Trust cosmosdb cert
+# RUN curl -k "${COSMOS_ENDPOINT}/_explorer/emulator.pem" -o '/usr/local/share/ca-certificates/emulator.crt'
+RUN update-ca-certificates
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "WisdomPetMedicine.Hospital.Api.dll"]

@@ -12,7 +12,21 @@ namespace WisdomPetMedicine.Hospital.Infrastructure
         public WisdomPetMedicineCosmosDbHealthCheck(IConfiguration configuration)
         {
             this.configuration = configuration;
-            cosmosClient = new CosmosClient(configuration["CosmosDb:ConnectionString"]);
+            var cosmosClientOptions = new CosmosClientOptions()
+            {
+                HttpClientFactory = () =>
+                {
+                    HttpMessageHandler httpMessageHandler = new HttpClientHandler()
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    };
+
+                    return new HttpClient(httpMessageHandler);
+                },
+                ConnectionMode = ConnectionMode.Gateway
+            };
+
+            cosmosClient = new CosmosClient(configuration["CosmosDb:ConnectionString"], cosmosClientOptions);
         }
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {

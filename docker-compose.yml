@@ -8,14 +8,14 @@ services:
     environment:
       - COLLECTOR_ZIPKIN_HOST_PORT=:9411
     ports:
-      - "5775:5775/udp"
-      - "6831:6831/udp"
-      - "6832:6832/udp"
-      - "5778:5778/udp"
-      - "16686:16686/udp"
-      - "14268:14268/udp"
-      - "14250:14250/udp"
-      - "9411:9411/udp"
+      - "5775:5775"
+      - "6831:6831"
+      - "6832:6832"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "14250:14250"
+      - "9411:9411"
     restart: unless-stopped
 
   cosmosdb:
@@ -29,6 +29,7 @@ services:
       - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10
       - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
       - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - AZURE_COSMOS_EMULATOR_ARGS='/alternativenames=cosmosdb'
       # - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=${IPADDR:-"`ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"}
       #todo: https://github.com/noelbundick/docker-cosmosdb
     ports:
@@ -61,6 +62,7 @@ services:
       - ServiceBus__ConnectionString=${AZSERVICEBUSSECRET:-}
       - ServiceBus__TopicName=pet-transferred-to-hospital
       - ServiceBus__SubscriptionName=pet-transferred-to-hospital
+      - COSMOS_ENDPOINT=https://cosmosdb:8081
       - CosmosDb__ConnectionString=AccountEndpoint=https://cosmosdb:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;
       - CosmosDb__DatabaseId=WisdomPetMedicine
       - CosmosDb__ContainerId=Patients
@@ -82,6 +84,7 @@ services:
       - ConnectionStrings__Hospital=Data Source=sqldb,1433;Initial Catalog=Hospital;User Id=sa;Password=MyComplexP@ssword!;Encrypt=false;
       - CosmosDbConnectionString=AccountEndpoint=https://cosmosdb:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;
       - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+      - COSMOS_ENDPOINT=https://cosmosdb:8081
       - CosmosDb__ConnectionString=AccountEndpoint=https://cosmosdb:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;
       - CosmosDb__DatabaseId=WisdomPetMedicine
       - CosmosDb__ContainerId=Patients
@@ -103,6 +106,7 @@ services:
       - ServiceBus__Transfer__SubscriptionName=pet-transferred-to-hospital
       - ServiceBus__Adoption__TopicName=pet-flagged-for-adoption
       - ServiceBus__Adoption__SubscriptionName=pet-flagged-for-adoption
+      - COSMOS_ENDPOINT=https://cosmosdb:8081
       - CosmosDb__ConnectionString=AccountEndpoint=https://cosmosdb:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;
       - CosmosDb__DatabaseId=WisdomPetMedicine
       - CosmosDb__ContainerId=Patients
