@@ -30,7 +30,7 @@ env:
   REGISTRY_HOST: ghcr.io
 
 jobs:
-  BuildAndPushLinuxContainersContainersForPR:
+  BuildLinuxContainers:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
