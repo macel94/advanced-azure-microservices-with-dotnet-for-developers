@@ -22,7 +22,7 @@ services:
     container_name: cosmosdb
     mem_limit: 3g
     cpu_count: 2
-    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
     tty: true
     restart: unless-stopped
     environment:
@@ -68,7 +68,9 @@ services:
       - CosmosDb__ContainerId=Patients
       - Jaeger__Host=jaeger
       - Jaeger__Port=6831
-      
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
+      - ASPNETCORE_ENVIRONMENT=Development
+
     depends_on:
       - sqldb
       - cosmosdb

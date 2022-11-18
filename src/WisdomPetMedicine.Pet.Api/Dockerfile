@@ -25,7 +25,7 @@ ENV ASPNETCORE_ENVIRONMENT Production
 RUN apk add --no-cache icu-libs curl
 
 # Disable the invariant mode (set in base image)
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=0
 ENV ASPNETCORE_URLS http://+:80
 EXPOSE 80
 
