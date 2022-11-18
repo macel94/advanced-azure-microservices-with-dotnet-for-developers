@@ -6,7 +6,7 @@ EXPOSE 80
 COPY /src/WisdomPetMedicine.Hospital.Projector/cosmosdbemulator.crt /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /src
 COPY ["src/WisdomPetMedicine.Hospital.Projector/WisdomPetMedicine.Hospital.Projector.csproj", "src/WisdomPetMedicine.Hospital.Projector/"]
 COPY ["src/WisdomPetMedicine.Hospital.Domain/WisdomPetMedicine.Hospital.Domain.csproj", "src/WisdomPetMedicine.Hospital.Domain/"]
